@@ -1,0 +1,601 @@
+<title>Bharosha</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Rozha+One&family=Hind+Siliguri:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long kantha quilt. A running-stitch thread is sewn down the page as you scroll,
+   joining Dhaka to the hospital and back home. Bengali script carries the voice; Latin follows. */
+:root {
+  --cotton: #EEF2EF;      /* unbleached cotton with a cool, clinical tint */
+  --cotton-2: #E2E8E4;
+  --indigo: #1C2354;      /* kantha indigo thread: text and structure */
+  --indigo-soft: #4A5180;
+  --alta: #C42A3C;        /* alta red: the single bold accent */
+  --marigold: #D99A22;    /* secondary thread */
+  --line: rgba(28, 35, 84, .16);
+  --card: #F7F9F7;
+
+  --f-bn: "Tiro Bangla", "Noto Serif Bengali", "Vrinda", serif;
+  --f-display: "Rozha One", "Tiro Bangla", Georgia, serif;
+  --f-body: "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --step--1: clamp(.82rem, .8rem + .1vw, .9rem);
+  --step-0: clamp(1rem, .96rem + .2vw, 1.12rem);
+  --step-1: clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+  --step-2: clamp(1.7rem, 1.4rem + 1.4vw, 2.6rem);
+  --step-3: clamp(2.3rem, 1.7rem + 3vw, 4.2rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --cotton: #10142E; --cotton-2: #171C3D; --indigo: #E7EAF2; --indigo-soft: #A9AFCB;
+    --alta: #F0566A; --marigold: #EDB64A; --line: rgba(231, 234, 242, .16); --card: #161B3A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --cotton: #10142E; --cotton-2: #171C3D; --indigo: #E7EAF2; --indigo-soft: #A9AFCB;
+  --alta: #F0566A; --marigold: #EDB64A; --line: rgba(231, 234, 242, .16); --card: #161B3A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cotton); color: var(--indigo);
+  font-family: var(--f-body); font-size: var(--step-0); line-height: 1.65;
+  overflow-x: hidden;
+}
+/* fine cotton weave */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .5;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 3px, var(--line) 3px 3.5px),
+    repeating-linear-gradient(90deg, transparent 0 3px, var(--line) 3px 3.5px);
+  mask-image: linear-gradient(#000 0, transparent 70%);
+  opacity: .18;
+}
+.wrap {
+  position: relative; z-index: 1; max-width: 1120px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 400; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--alta); outline-offset: 3px; border-radius: 4px; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: .14em;
+  text-transform: uppercase; color: var(--indigo-soft);
+}
+.bn { font-family: var(--f-bn); }
+
+/* ---------- top bar ---------- */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--cotton);
+}
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+  background: color-mix(in srgb, var(--cotton) 82%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.logo { display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
+.logo .bn { font-size: 1.6rem; line-height: 1; }
+.logo span:last-child { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; color: var(--indigo-soft); }
+.bar nav { display: flex; gap: 22px; font-size: var(--step--1); }
+.bar nav a { text-decoration: none; color: var(--indigo-soft); }
+.bar nav a:hover { color: var(--indigo); }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer;
+  font: 600 var(--step--1)/1 var(--f-body); letter-spacing: .02em;
+  padding: 14px 20px; border-radius: 999px; text-decoration: none;
+  background: var(--alta); color: #fff;
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px var(--alta); }
+.btn:active { transform: translateY(0) scale(.98); }
+.btn.ghost { background: transparent; color: var(--indigo); box-shadow: inset 0 0 0 1.5px var(--indigo); }
+.btn.ghost:hover { box-shadow: inset 0 0 0 1.5px var(--indigo), 0 10px 24px -14px var(--indigo); }
+.bar .btn { padding: 10px 16px; }
+@media (max-width: 760px) { .bar nav { display: none; } }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(40px, 7vw, 96px) clamp(48px, 6vw, 80px); position: relative; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(24px, 4vw, 64px); align-items: end; }
+.word {
+  position: relative; font-family: var(--f-bn); line-height: .9;
+  font-size: clamp(6.5rem, 21vw, 15.5rem); letter-spacing: -.01em; margin-left: -.04em;
+}
+.word .ink { display: block; background: linear-gradient(100deg, var(--indigo) 0 50%, transparent 50%) 0 0 / 200% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: ink 1.6s cubic-bezier(.65,0,.25,1) .2s both; }
+@keyframes ink { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.pron { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; margin-top: 18px; font-family: var(--f-mono); font-size: var(--step--1); color: var(--indigo-soft); }
+.pron b { font-weight: 500; color: var(--alta); }
+.hero h1 { font-family: var(--f-display); font-size: var(--step-3); line-height: 1.04; margin-top: 28px; max-width: 15ch; }
+.hero h1 em { font-style: normal; color: var(--alta); }
+.hero-side { display: grid; gap: 22px; padding-bottom: 12px; }
+.hero-side p { max-width: 42ch; color: var(--indigo-soft); }
+.hero-side .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.stitch-hero { display: block; width: 100%; height: 70px; margin-top: 36px; overflow: visible; }
+.stitch-hero path { fill: none; stroke: var(--alta); stroke-width: 2.5; stroke-linecap: round; }
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+
+/* ---------- marquee ---------- */
+.marquee { border-block: 1px solid var(--line); overflow: hidden; position: relative; z-index: 1; background: var(--cotton-2); }
+.marquee-track { display: flex; gap: 48px; width: max-content; padding-block: 16px; animation: slide 38s linear infinite; }
+.marquee-track span { display: inline-flex; gap: 14px; align-items: baseline; white-space: nowrap; font-size: var(--step-1); }
+.marquee-track .bn { color: var(--indigo); }
+.marquee-track i { font-style: normal; font-family: var(--f-mono); font-size: var(--step--1); color: var(--indigo-soft); letter-spacing: .1em; text-transform: uppercase; }
+.marquee-track .dot { color: var(--marigold); }
+@keyframes slide { to { transform: translateX(-50%); } }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ---------- meaning ---------- */
+section { position: relative; z-index: 1; padding-block: clamp(64px, 9vw, 128px); }
+.meaning-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+.entry { border-top: 2px solid var(--indigo); padding-top: 20px; }
+.entry .head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.entry .head .bn { font-size: var(--step-3); line-height: 1; }
+.entry .head .ipa { font-family: var(--f-mono); color: var(--indigo-soft); font-size: var(--step--1); }
+.entry .pos { font-style: italic; color: var(--indigo-soft); margin-top: 8px; }
+.senses { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 14px; counter-reset: s; }
+.senses li { display: grid; grid-template-columns: 28px 1fr; gap: 8px; counter-increment: s; }
+.senses li::before { content: counter(s) "."; font-family: var(--f-mono); color: var(--alta); }
+.senses li span { color: var(--indigo-soft); }
+.meaning-copy h2 { font-family: var(--f-display); font-size: var(--step-2); line-height: 1.12; }
+.meaning-copy p { margin-top: 20px; max-width: 58ch; color: var(--indigo-soft); }
+.meaning-copy blockquote { margin: 28px 0 0; padding-left: 20px; border-left: 3px dashed var(--alta); }
+.meaning-copy blockquote .bn { font-size: var(--step-1); display: block; }
+.meaning-copy blockquote small { font-family: var(--f-mono); color: var(--indigo-soft); font-size: var(--step--1); }
+@media (max-width: 860px) { .meaning-grid { grid-template-columns: 1fr; } }
+
+/* ---------- journey (scroll-sewn thread) ---------- */
+.journey { background: var(--cotton-2); border-block: 1px solid var(--line); }
+.sec-head { display: grid; gap: 14px; max-width: 60ch; }
+.sec-head h2 { font-family: var(--f-display); font-size: var(--step-2); line-height: 1.12; }
+.sec-head p { color: var(--indigo-soft); }
+.steps { position: relative; margin-top: 56px; display: grid; gap: clamp(28px, 4vw, 44px); padding-left: 64px; }
+.thread { position: absolute; left: 0; top: 0; width: 48px; height: 100%; overflow: visible; }
+.thread .base { fill: none; stroke: var(--line); stroke-width: 2.5; stroke-dasharray: 10 9; }
+.thread .sewn { fill: none; stroke: var(--alta); stroke-width: 2.5; stroke-dasharray: 10 9; stroke-linecap: round; }
+.needle { position: absolute; left: 14px; width: 20px; height: 20px; border-radius: 50%; background: var(--alta);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--alta) 20%, transparent); transform: translate(-50%, -50%); top: 0; left: 24px; }
+.step { display: grid; grid-template-columns: 130px 1fr; gap: 8px 28px; align-items: baseline; transition: opacity .4s; }
+.step .when { font-family: var(--f-mono); font-size: var(--step--1); color: var(--alta); letter-spacing: .06em; }
+.step h3 { font-family: var(--f-display); font-size: var(--step-1); line-height: 1.2; }
+.step h3 .bn { font-family: var(--f-bn); color: var(--indigo-soft); font-size: .8em; margin-left: 10px; }
+.step p { grid-column: 2; max-width: 60ch; color: var(--indigo-soft); }
+.step .tags { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.tag { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1px dashed var(--indigo-soft); color: var(--indigo-soft); }
+.js .step:not(.lit) { opacity: .55; }
+@media (max-width: 640px) {
+  .steps { padding-left: 44px; }
+  .step { grid-template-columns: 1fr; }
+  .step p, .step .tags { grid-column: 1; }
+}
+
+/* ---------- destinations ---------- */
+.dest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 56px); margin-top: 48px; align-items: center; }
+.map { width: 100%; max-width: 100%; height: auto; overflow: visible; }
+.map .arc { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 7 7; transition: stroke .3s; }
+.map .arc.on { stroke: var(--alta); stroke-width: 2.5; animation: march 1s linear infinite; }
+@keyframes march { to { stroke-dashoffset: -14; } }
+.map .city circle { fill: var(--card); stroke: var(--indigo); stroke-width: 2; transition: r .3s, fill .3s; }
+.map .city.on circle { fill: var(--alta); stroke: var(--alta); }
+.map .home circle { fill: var(--marigold); stroke: var(--marigold); }
+.map text { fill: var(--indigo); font-family: var(--f-body); font-size: 15px; font-weight: 600; }
+.map text.sub { fill: var(--indigo-soft); font-family: var(--f-mono); font-size: 11px; font-weight: 400; }
+.map .compass { fill: var(--indigo-soft); font-family: var(--f-mono); font-size: 11px; }
+.cities { display: grid; gap: 10px; }
+.city-btn {
+  all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px;
+  padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line); background: var(--card);
+  transition: border-color .25s, transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.city-btn:hover { transform: translateX(4px); }
+.city-btn[aria-pressed="true"] { border-color: var(--alta); box-shadow: inset 4px 0 0 var(--alta); }
+.city-btn:focus-visible { outline: 2px solid var(--alta); outline-offset: 3px; }
+.city-btn strong { font-family: var(--f-display); font-weight: 400; font-size: var(--step-1); line-height: 1.2; }
+.city-btn strong .bn { font-family: var(--f-bn); font-size: .8em; color: var(--indigo-soft); margin-left: 8px; }
+.city-btn .hop { font-family: var(--f-mono); font-size: var(--step--1); color: var(--alta); align-self: center; text-align: right; font-variant-numeric: tabular-nums; }
+.city-btn p { grid-column: 1 / -1; color: var(--indigo-soft); font-size: var(--step--1); }
+@media (max-width: 860px) { .dest-grid { grid-template-columns: 1fr; } }
+
+/* ---------- care ---------- */
+.care-list { list-style: none; padding: 0; margin: 48px 0 0; border-top: 1px solid var(--line); }
+.care-list li { border-bottom: 1px solid var(--line); }
+.care-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; gap: 8px 32px; align-items: baseline; padding-block: 22px; position: relative; }
+.care-row::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 0; background: var(--cotton-2); z-index: -1; transition: width .5s cubic-bezier(.65,0,.25,1); }
+.care-row:hover::before { width: 100%; }
+.care-row h3 { font-family: var(--f-display); font-size: var(--step-2); line-height: 1.1; }
+.care-row h3 .bn { display: block; font-family: var(--f-bn); font-size: .45em; color: var(--indigo-soft); margin-top: 4px; }
+.care-row p { color: var(--indigo-soft); max-width: 48ch; }
+.care-row .stay { font-family: var(--f-mono); font-size: var(--step--1); color: var(--indigo-soft); white-space: nowrap; }
+@media (max-width: 760px) { .care-row { grid-template-columns: 1fr; } .care-row .stay { white-space: normal; } }
+
+/* ---------- promises ---------- */
+.promises { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 48px; border: 2px solid var(--indigo); border-radius: 18px; overflow: hidden; }
+.promise { padding: clamp(22px, 3vw, 36px); display: grid; gap: 12px; align-content: start; }
+.promise + .promise { border-left: 2px dashed var(--line); }
+.promise .bn { font-size: var(--step-2); line-height: 1; color: var(--alta); }
+.promise h3 { font-family: var(--f-display); font-size: var(--step-1); line-height: 1.2; }
+.promise p { color: var(--indigo-soft); font-size: var(--step--1); }
+@media (max-width: 860px) {
+  .promises { grid-template-columns: 1fr; }
+  .promise + .promise { border-left: 0; border-top: 2px dashed var(--line); }
+}
+
+/* ---------- contact ---------- */
+.contact { background: var(--indigo); color: var(--cotton); }
+.contact .eyebrow { color: color-mix(in srgb, var(--cotton) 70%, transparent); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+.contact h2 { font-family: var(--f-display); font-size: var(--step-3); line-height: 1.02; margin-top: 14px; }
+.contact h2 .bn { display: block; font-family: var(--f-bn); color: var(--marigold); font-size: .7em; margin-top: 10px; }
+.contact .lede { margin-top: 22px; max-width: 46ch; color: color-mix(in srgb, var(--cotton) 78%, transparent); }
+.form { display: grid; gap: 16px; background: var(--cotton); color: var(--indigo); padding: clamp(20px, 3vw, 32px); border-radius: 20px; }
+.field { display: grid; gap: 6px; }
+.field label { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--indigo-soft); }
+.field input, .field select, .field textarea {
+  font: inherit; color: var(--indigo); background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--alta); }
+.field textarea { min-height: 96px; resize: vertical; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form .note { font-size: var(--step--1); color: var(--indigo-soft); }
+.form .done { padding: 14px 16px; border-radius: 10px; background: var(--cotton-2); border: 1px dashed var(--alta); }
+@media (max-width: 860px) { .contact-grid, .row2 { grid-template-columns: 1fr; } }
+
+footer { position: relative; z-index: 1; padding-block: 36px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font-size: var(--step--1); color: var(--indigo-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  .word .ink { background-position: 0 0; }
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Bharosha home"><span class="bn">ভরসা</span><span>Bharosha</span></a>
+    <nav aria-label="Sections">
+      <a href="#journey">The journey</a>
+      <a href="#cities">Where we go</a>
+      <a href="#care">Treatments</a>
+      <a href="#promise">Our promise</a>
+    </nav>
+    <a class="btn" href="#contact">Send your reports</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="word" aria-label="ভরসা, Bharosha">
+          <span class="ink" aria-hidden="true">ভরসা</span>
+        </div>
+        <div class="pron"><span><b>bhor·sha</b></span><span>Bengali, noun</span><span>trust · reliance · the one you lean on</span></div>
+        <h1>Treatment in India, with someone you <em>trust</em> beside you.</h1>
+      </div>
+      <div class="hero-side">
+        <p>Bharosha arranges medical travel from Bangladesh to India's leading hospitals. We find the right doctor, handle the visa papers, book your travel and stay, and a Bangla-speaking coordinator is with you from the first report to the flight home.</p>
+        <div class="cta-row">
+          <a class="btn" href="#contact">Get a free report review
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn ghost" href="#journey">See how it works</a>
+        </div>
+      </div>
+    </div>
+    <svg class="stitch-hero" viewBox="0 0 1000 70" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <mask id="heroMask"><path id="heroMaskPath" d="M0 40 C 120 10, 220 62, 340 36 S 560 8, 680 40 S 880 64, 1000 26" fill="none" stroke="#fff" stroke-width="8"/></mask>
+      </defs>
+      <path d="M0 40 C 120 10, 220 62, 340 36 S 560 8, 680 40 S 880 64, 1000 26" stroke-dasharray="14 10" mask="url(#heroMask)"/>
+    </svg>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span><b class="bn">ঢাকা</b><i>Dhaka</i></span><span class="dot">✦</span>
+      <span><b class="bn">কলকাতা</b><i>Kolkata</i></span><span class="dot">✦</span>
+      <span><b class="bn">চেন্নাই</b><i>Chennai</i></span><span class="dot">✦</span>
+      <span><b class="bn">ভেলোর</b><i>Vellore</i></span><span class="dot">✦</span>
+      <span><b class="bn">বেঙ্গালুরু</b><i>Bengaluru</i></span><span class="dot">✦</span>
+      <span><b class="bn">ভরসা রাখুন</b><i>Keep faith</i></span><span class="dot">✦</span>
+      <span><b class="bn">ঢাকা</b><i>Dhaka</i></span><span class="dot">✦</span>
+      <span><b class="bn">কলকাতা</b><i>Kolkata</i></span><span class="dot">✦</span>
+      <span><b class="bn">চেন্নাই</b><i>Chennai</i></span><span class="dot">✦</span>
+      <span><b class="bn">ভেলোর</b><i>Vellore</i></span><span class="dot">✦</span>
+      <span><b class="bn">বেঙ্গালুরু</b><i>Bengaluru</i></span><span class="dot">✦</span>
+      <span><b class="bn">ভরসা রাখুন</b><i>Keep faith</i></span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <section aria-labelledby="meaning-h">
+    <div class="wrap meaning-grid">
+      <div class="entry">
+        <div class="head"><span class="bn">ভরসা</span><span class="ipa">/bʱɔr·ʃa/</span></div>
+        <p class="pos">noun. From Sanskrit; shared with Hindi and Urdu <span lang="hi">bharosa</span>.</p>
+        <ol class="senses">
+          <li><div><strong>Trust.</strong> <span>Belief that someone is honest and will not let you down.</span></div></li>
+          <li><div><strong>Reliance.</strong> <span>The person or thing you depend on when you cannot manage alone.</span></div></li>
+          <li><div><strong>Hope, assurance.</strong> <span>The steadiness that lets you take the next step.</span></div></li>
+        </ol>
+      </div>
+      <div class="meaning-copy">
+        <p class="eyebrow">Why this name</p>
+        <h2 id="meaning-h">Going abroad for treatment is hard enough. You should not have to do it alone.</h2>
+        <p>When a family in Dhaka, Chattogram or Sylhet decides on surgery in India, the worry is rarely the doctor. It is everything around the doctor: which hospital, which papers, where to stay, how to talk to the nurses, what it will really cost. In Bangla, the person who carries that weight with you is your ভরসা.</p>
+        <p>That is the job we have given ourselves.</p>
+        <blockquote>
+          <span class="bn">চিকিৎসা ভারতে, পাশে আমরা।</span>
+          <small>Treatment in India. We stay beside you.</small>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey" id="journey" aria-labelledby="journey-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">The journey, stitch by stitch</p>
+        <h2 id="journey-h">From your first report to the flight home</h2>
+        <p>Every case follows the same path. Scroll down and the thread follows you.</p>
+      </div>
+      <div class="steps" id="steps">
+        <svg class="thread" id="thread" aria-hidden="true" preserveAspectRatio="none">
+          <defs><mask id="threadMask" maskUnits="userSpaceOnUse"><path id="threadMaskPath" fill="none" stroke="#fff" stroke-width="10"/></mask></defs>
+          <path class="base" id="threadBase"/>
+          <path class="sewn" id="threadSewn" mask="url(#threadMask)"/>
+        </svg>
+        <div class="needle" id="needle" aria-hidden="true"></div>
+
+        <article class="step">
+          <span class="when">Day 1</span>
+          <h3>Send us your reports <span class="bn">রিপোর্ট পাঠান</span></h3>
+          <p>Photos of prescriptions, scans and test results on WhatsApp are enough. Tell us what your doctor in Bangladesh has said, and your budget if you have one.</p>
+          <div class="tags"><span class="tag">WhatsApp</span><span class="tag">No fee</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Day 2–4</span>
+          <h3>Opinions and a real estimate <span class="bn">মতামত ও খরচ</span></h3>
+          <p>We send your case to specialists at two or three suitable hospitals. You get their written opinion and each hospital's own cost estimate, side by side, in Bangla.</p>
+          <div class="tags"><span class="tag">2–3 hospitals</span><span class="tag">Written estimate</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Week 1–2</span>
+          <h3>Visa papers <span class="bn">ভিসার কাগজ</span></h3>
+          <p>The hospital issues a visa invitation letter. We prepare your medical visa and the attendant visas for up to two family members, and tell you the current waiting time before you pay for anything.</p>
+          <div class="tags"><span class="tag">Medical visa</span><span class="tag">Attendant visa</span><span class="tag">Invitation letter</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Travel day</span>
+          <h3>Flight or road, your choice <span class="bn">যাত্রা</span></h3>
+          <p>Fly from Dhaka, or travel by road through Benapole and Petrapole for Kolkata. We book tickets that fit your appointment and send the plan to your phone.</p>
+          <div class="tags"><span class="tag">Flight</span><span class="tag">Benapole–Petrapole</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Arrival</span>
+          <h3>Someone waiting for you <span class="bn">পৌঁছানো</span></h3>
+          <p>Airport or border pickup, an Indian SIM, rupee exchange, and a clean room within walking distance of the hospital, with a kitchen if you want to cook your own food.</p>
+          <div class="tags"><span class="tag">Pickup</span><span class="tag">SIM &amp; rupees</span><span class="tag">Stay near hospital</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Treatment</span>
+          <h3>A coordinator who speaks Bangla <span class="bn">চিকিৎসা</span></h3>
+          <p>In Chennai and Vellore the staff speak Tamil and English. Your coordinator joins consultations, explains every bill and report, and keeps your family at home updated.</p>
+          <div class="tags"><span class="tag">Interpreting</span><span class="tag">Bill checks</span><span class="tag">Family updates</span></div>
+        </article>
+        <article class="step">
+          <span class="when">Back home</span>
+          <h3>Follow-up from Bangladesh <span class="bn">ফিরে আসা</span></h3>
+          <p>We book video follow-ups with your doctor in India, arrange medicines you cannot find at home, and keep your records together for your local doctor.</p>
+          <div class="tags"><span class="tag">Video follow-up</span><span class="tag">Records</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="cities" aria-labelledby="cities-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Where we go</p>
+        <h2 id="cities-h">Four cities, chosen for your treatment</h2>
+        <p>Pick a city to see the route. We recommend one based on your condition, your budget and how far you can travel.</p>
+      </div>
+      <div class="dest-grid">
+        <svg class="map" viewBox="0 0 520 420" role="img" aria-labelledby="map-title">
+          <title id="map-title">Route diagram from Dhaka to Kolkata, Chennai, Vellore and Bengaluru</title>
+          <text class="compass" x="10" y="20">N ↑</text>
+          <text class="compass" x="10" y="410">Not to scale</text>
+          <path class="arc" data-city="kolkata" d="M452 56 Q 430 40 392 92"/>
+          <path class="arc" data-city="chennai" d="M452 56 Q 400 220 179 352"/>
+          <path class="arc" data-city="vellore" d="M452 56 Q 360 260 143 358"/>
+          <path class="arc" data-city="bengaluru" d="M452 56 Q 320 300 98 356"/>
+          <g class="city home"><circle cx="452" cy="56" r="9"/><text x="468" y="52">Dhaka</text><text class="sub" x="468" y="68">you start here</text></g>
+          <g class="city" data-city="kolkata"><circle cx="392" cy="92" r="7"/><text x="406" y="112">Kolkata</text></g>
+          <g class="city" data-city="chennai"><circle cx="179" cy="352" r="7"/><text x="192" y="348">Chennai</text></g>
+          <g class="city" data-city="vellore"><circle cx="143" cy="358" r="7"/><text x="112" y="390">Vellore</text></g>
+          <g class="city" data-city="bengaluru"><circle cx="98" cy="356" r="7"/><text x="20" y="340">Bengaluru</text></g>
+        </svg>
+        <div class="cities" role="group" aria-label="Destination cities">
+          <button class="city-btn" data-city="kolkata" aria-pressed="true">
+            <strong>Kolkata <span class="bn">কলকাতা</span></strong><span class="hop">~1 hr flight</span>
+            <p>The closest option, reachable by road too. Bangla is spoken everywhere, which makes long stays easier for older patients.</p>
+          </button>
+          <button class="city-btn" data-city="chennai" aria-pressed="false">
+            <strong>Chennai <span class="bn">চেন্নাই</span></strong><span class="hop">~2.5 hr flight</span>
+            <p>A large cluster of specialist hospitals for heart, cancer, transplant and spine care.</p>
+          </button>
+          <button class="city-btn" data-city="vellore" aria-pressed="false">
+            <strong>Vellore <span class="bn">ভেলোর</span></strong><span class="hop">via Chennai, ~3 hr road</span>
+            <p>A small city built around a long-established teaching hospital. Familiar to many Bangladeshi families, and popular for longer treatment courses.</p>
+          </button>
+          <button class="city-btn" data-city="bengaluru" aria-pressed="false">
+            <strong>Bengaluru <span class="bn">বেঙ্গালুরু</span></strong><span class="hop">~3 hr flight</span>
+            <p>Strong in neurology, orthopaedics and fertility care, with a cooler climate for recovery.</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="care" aria-labelledby="care-h" style="padding-top: 0">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Treatments we arrange</p>
+        <h2 id="care-h">What families most often travel for</h2>
+      </div>
+      <ul class="care-list">
+        <li class="care-row"><h3>Heart care <span class="bn">হৃদরোগ</span></h3><p>Angiography, stents, bypass and valve surgery, and second opinions before you commit.</p><span class="stay">Typical stay 1–3 weeks</span></li>
+        <li class="care-row"><h3>Cancer care <span class="bn">ক্যান্সার</span></h3><p>Diagnosis, surgery, chemotherapy and radiotherapy, with planning for repeat visits.</p><span class="stay">Plan in cycles</span></li>
+        <li class="care-row"><h3>Bones &amp; joints <span class="bn">হাড় ও জোড়া</span></h3><p>Knee and hip replacement, spine surgery and the physiotherapy that comes after.</p><span class="stay">Typical stay 2–4 weeks</span></li>
+        <li class="care-row"><h3>Kidney &amp; liver <span class="bn">কিডনি ও লিভার</span></h3><p>Transplant work-up, donor paperwork and long-stay accommodation for the family.</p><span class="stay">Plan 1–3 months</span></li>
+        <li class="care-row"><h3>Brain &amp; nerves <span class="bn">স্নায়ু</span></h3><p>Neurology and neurosurgery opinions, epilepsy and stroke rehabilitation.</p><span class="stay">Varies by case</span></li>
+        <li class="care-row"><h3>Fertility <span class="bn">সন্তান ধারণ</span></h3><p>IVF consultations and treatment cycles, arranged with privacy in mind.</p><span class="stay">Plan 2–6 weeks</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="promise" aria-labelledby="promise-h" style="padding-top: 0">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Our promise</p>
+        <h2 id="promise-h">Three things we will always tell you plainly</h2>
+      </div>
+      <div class="promises">
+        <div class="promise"><span class="bn">খরচ</span><h3>The real cost</h3><p>You see each hospital's own estimate. Our service fee is fixed, separate and agreed before you travel.</p></div>
+        <div class="promise"><span class="bn">সময়</span><h3>The real wait</h3><p>Visa times change. We tell you the current waiting time honestly, before you spend money on tickets.</p></div>
+        <div class="promise"><span class="bn">পছন্দ</span><h3>Your choice of hospital</h3><p>We give you options and explain the differences. The decision stays with you and your family.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap contact-grid">
+      <div>
+        <p class="eyebrow">Start here</p>
+        <h2 id="contact-h">Tell us what the doctor said. <span class="bn">ভরসা রাখুন।</span></h2>
+        <p class="lede">Share a few details and we will call you back in Bangla to talk through your options. A report review costs nothing and does not commit you to anything.</p>
+      </div>
+      <form class="form" id="form" novalidate>
+        <div class="row2">
+          <div class="field"><label for="f-name">Patient's name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-phone">WhatsApp number</label><input id="f-phone" name="phone" type="tel" inputmode="tel" placeholder="+880 1…" autocomplete="tel" required></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="f-care">Treatment needed</label>
+            <select id="f-care" name="care">
+              <option>Not sure yet</option><option>Heart care</option><option>Cancer care</option><option>Bones &amp; joints</option>
+              <option>Kidney &amp; liver</option><option>Brain &amp; nerves</option><option>Fertility</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-city">Preferred city</label>
+            <select id="f-city" name="city"><option>Recommend one for me</option><option>Kolkata</option><option>Chennai</option><option>Vellore</option><option>Bengaluru</option></select>
+          </div>
+        </div>
+        <div class="field"><label for="f-msg">What has your doctor said?</label><textarea id="f-msg" name="msg" placeholder="Diagnosis, tests done, any dates you need to keep"></textarea></div>
+        <button class="btn" type="submit">Request a call back</button>
+        <p class="note" id="form-note">We reply in Bangla or English. Your reports are only shared with the hospitals you approve.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><span class="bn">ভরসা</span> Bharosha medical travel · Dhaka</span>
+    <span>We arrange travel and coordination. Medical decisions are made by your doctors.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Hero stitch: sew the thread in once on load */
+  var hm = document.getElementById('heroMaskPath');
+  if (hm) {
+    var hl = hm.getTotalLength();
+    hm.style.strokeDasharray = hl; hm.style.strokeDashoffset = reduce ? 0 : hl;
+    if (!reduce) requestAnimationFrame(function () {
+      hm.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(.65,0,.25,1) .6s';
+      hm.style.strokeDashoffset = 0;
+    });
+  }
+
+  /* Journey thread: a wavy running stitch whose sewn length follows scroll */
+  var steps = document.getElementById('steps');
+  var base = document.getElementById('threadBase'), sewn = document.getElementById('threadSewn');
+  var mask = document.getElementById('threadMaskPath'), needle = document.getElementById('needle');
+  var items = Array.prototype.slice.call(steps.querySelectorAll('.step'));
+  var len = 0;
+
+  function buildPath() {
+    var h = steps.offsetHeight, x = 24, amp = 14, seg = 90, d = 'M' + x + ' 0';
+    for (var y = 0, i = 0; y < h; y += seg, i++) {
+      var ny = Math.min(h, y + seg), cx = x + (i % 2 ? -amp : amp);
+      d += ' Q ' + cx + ' ' + (y + seg / 2) + ' ' + x + ' ' + ny;
+    }
+    [base, sewn, mask].forEach(function (p) { p.setAttribute('d', d); });
+    len = mask.getTotalLength();
+    mask.style.strokeDasharray = len;
+    update();
+  }
+
+  function update() {
+    var r = steps.getBoundingClientRect(), vh = window.innerHeight;
+    var p = (vh * 0.6 - r.top) / r.height;
+    p = Math.max(0, Math.min(1, p));
+    if (reduce) p = 1;
+    mask.style.strokeDashoffset = len * (1 - p);
+    var pt = mask.getPointAtLength(len * p);
+    needle.style.top = pt.y + 'px'; needle.style.left = pt.x + 'px';
+    items.forEach(function (el) {
+      el.classList.toggle('lit', reduce || el.getBoundingClientRect().top < vh * 0.62);
+    });
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
+  }, { passive: true });
+  window.addEventListener('resize', buildPath);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildPath);
+  buildPath();
+
+  /* Destination picker */
+  var btns = document.querySelectorAll('.city-btn');
+  function pick(city) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.city === city)); });
+    document.querySelectorAll('.map [data-city]').forEach(function (el) { el.classList.toggle('on', el.dataset.city === city); });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { pick(b.dataset.city); });
+    b.addEventListener('mouseenter', function () { pick(b.dataset.city); });
+  });
+  pick('kolkata');
+
+  /* Form: validate in place; this preview is not connected to an inbox yet */
+  var form = document.getElementById('form'), note = document.getElementById('form-note');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.elements.name.value.trim(), phone = form.elements.phone.value.trim();
+    if (!name || !phone) {
+      note.textContent = 'Please add the patient\'s name and a WhatsApp number so we can call you back.';
+      (name ? form.elements.phone : form.elements.name).focus();
+      return;
+    }
+    note.className = 'note done';
+    note.textContent = 'Thank you, ' + name + '. This preview form is not connected yet, so nothing was sent. On the live site, your details would go to the Bharosha team.';
+  });
+})();
+</script>
