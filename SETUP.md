@@ -48,3 +48,12 @@ python -m eval.motionsight.eval_motionbench
 
 Download MotionBench and/or FAVOR-Bench yourself, then replace the `/path/to/...` dataset paths in
 `eval/motionsight/eval_motionbench.py` and `eval/motionsight/eval_favorbench.py`.
+
+## No GPU? Use the skill
+
+`skills/motionsight-lite/` is a GPU-free Claude skill that applies MotionSight's motion trails and
+object spotlighting with OpenCV and lets Claude read the frames instead of Qwen2.5-VL. It only needs
+`pip install opencv-python numpy`. See `skills/motionsight-lite/SKILL.md`.
+
+- Claude Code: copy the folder to `~/.claude/skills/motionsight-lite` (or `.claude/skills/` in a project).
+- claude.ai: zip the `motionsight-lite` folder and upload it under Settings → Capabilities → Skills.
